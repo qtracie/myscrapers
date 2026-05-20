@@ -149,6 +149,22 @@ def parse_listing(text: str) -> dict:
     if mi is not None:
         d["mileage"] = mi
 
+    # transmission
+    m = re.search(r"\b(automatic|manual)\b", text, re.I)
+    if m:
+        d["transmission"] = m.group(1).lower()
+
+    # fuel type
+    m = re.search(r"\b(gas|diesel|hybrid|electric)\b", text, re.I)
+    if m:
+        d["fuel_type"] = m.group(1).lower()
+
+    # clean title
+    d["has_clean_title"] = bool(re.search(r"clean title", text, re.I))
+
+    # truck
+    d["is_truck"] = bool(re.search(r"\btruck\b", text, re.I))
+
     return d
 
 # -------------------- HTTP ENTRY --------------------
